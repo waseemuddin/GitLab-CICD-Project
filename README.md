@@ -14,7 +14,7 @@ The setup follows a **GitOps approach** using two repositories:
 
 ## 📁 Repository Structure
 
-# ![git-cicd-diagram](imges/01.png)
+# ![Repository Structure](img/dir02.png)
 
 .
 ├── k8s-connection
@@ -79,7 +79,7 @@ In the **k8s-connection** repository, create:
 4. Copy the **Agent Access Token**
 
 
-3 # ![git-cicd-diagram](imges/01.png)
+3 # ![k8s-connect](imges/k8s-connect003.png)
 
 
 Example:
@@ -103,7 +103,7 @@ helm upgrade --install k8s-connection gitlab/gitlab-agent \
   --set config.token=<AGENT_TOKEN> \
   --set config.kasAddress=wss://kas.gitlab.com
 
-4 # ![git-cicd-diagram](imges/01.png)
+4 # ![k8s-conn-local04](imges/k8s-conn-local04.png)
 
 
 ## 🔹 Step 04: Clone Both Repositories Locally
