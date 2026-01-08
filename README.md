@@ -1,7 +1,7 @@
 # 🚀 GitLab GitOps Deployment with Kubernetes (Minikube)
 
 
-# ![git-cicd-diagram](imges/01.png)
+# ![diagram](img/dia01.png)
 
 
 This mini project is the **end-to-end process of building, pushing, and deploying a containerized application to a Kubernetes cluster using GitLab CI/CD and GitLab Kubernetes Agent (KAS)**.
