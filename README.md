@@ -57,3 +57,41 @@ Create **two repositories** in GitLab:
 
 In the **k8s-connection** repository, create:
 
+``shell
+.gitlab/agents/k8s-connection/config.yaml
+``
+
+> Leave the file **empty initially**. Configuration will be added later.
+
+---
+
+## 🔹 Step 03: Connect Kubernetes Cluster to GitLab
+
+1. Go to **GitLab → Operate → Kubernetes Clusters**
+2. Click **Connect a cluster**
+3. Select **GitLab Agent**
+4. Copy the **Agent Access Token**
+
+Example:
+``shell
+glagent-xxxxxxxxxxxxxxxxxxxxxxxx
+``
+
+
+---
+
+### Install Agent Using Helm
+
+Run the following commands from your terminal:
+
+```bash
+helm repo add gitlab https://charts.gitlab.io
+helm repo update
+
+helm upgrade --install k8s-connection gitlab/gitlab-agent \
+  --namespace gitlab-agent-k8s-connection \
+  --create-namespace \
+  --set config.token=<AGENT_TOKEN> \
+  --set config.kasAddress=wss://kas.gitlab.com
+
+
