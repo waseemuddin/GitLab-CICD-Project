@@ -50,7 +50,7 @@ Create **two repositories** in GitLab:
 
 In the **k8s-connection** repository, create:
 
-``shell
+``
 .gitlab/agents/k8s-connection/config.yaml
 ``
 
@@ -70,7 +70,7 @@ In the **k8s-connection** repository, create:
 
 
 Example:
-``shell
+``
 glagent-xxxxxxxxxxxxxxxxxxxxxxxx
 ``
 
