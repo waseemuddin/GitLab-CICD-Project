@@ -16,19 +16,6 @@ The setup follows a **GitOps approach** using two repositories:
 
 # ![Repository Structure](img/dir02.png)
 
-.
-├── k8s-connection
-│ └── .gitlab/agents/k8s-connection/config.yaml
-│
-├── k8s-data
-│ ├── Dockerfile
-│ ├── .gitlab-ci.yml
-│ └── k8s-files/
-│ ├── deployment.yaml
-│ ├── service.yaml
-│ └── secret.yaml
-
-
 ---
 
 ## ✅ Prerequisites
@@ -79,7 +66,7 @@ In the **k8s-connection** repository, create:
 4. Copy the **Agent Access Token**
 
 
-3 # ![k8s-connect](imges/k8s-connect003.png)
+3 # ![k8s-connect](img/k8s-connect003.png)
 
 
 Example:
@@ -120,9 +107,6 @@ Inside k8s-data, build the Docker image:
 docker build -t sample:v1 .
 ```
 
-5 # ![git-cicd-diagram](imges/01.png)
-
-
 ## 🔹 Step 06: Push Image to GitLab Container Registry
 
 Login to GitLab Registry
@@ -135,7 +119,8 @@ docker build -t registry.gitlab.com/<username>/k8s-data .
 docker push registry.gitlab.com/<username>/k8s-data
 ```
 
-5 # ![git-cicd-diagram](imges/01.png)
+# ![Docker image](img/docker-image05.png)
+
 
 ## 🔹 Step 07: Push Code to GitLab
 
@@ -144,6 +129,7 @@ git add .
 git commit -m "Initial commit"
 git push
 ```
+
 
 ## 🔹 Step 08: Create GitLab CI/CD Pipeline
 
@@ -166,10 +152,11 @@ build:
 ```
 Once committed, the pipeline will build and push the Docker image automatically.
 
-6 # ![docker06](imges/docker06.png)
+# ![Docker image](img/docker06.png)
 
 
-8 # ![k8s-dia08](imges/k8s-dia08.png)
+
+# ![k8s-dia08](img/k8s-dia08.png)
 
 ## 🔹 Step 09: Deploy Application to Kubernetes
 
@@ -189,8 +176,7 @@ deploy_project:
     - kubectl get nodes -o wide
 ```
 
-
-7 # ![k8s-07](imges/k8s-07.png)
+# ![k8s-07](img/k8s-07.png)
 
 
 ## 🔐 Fix Agent Access Issue (Important)
@@ -204,7 +190,7 @@ ci_access:
     - id: <username>/k8s-data
 ```
 
-9 # ![cicd-09](imges/cicd-09.png)
+# ![cicd-09](img/cicd-09.png)
 
 
 Final OutPut
@@ -214,7 +200,7 @@ Application is deployed to Kubernetes using GitOps
 No kubeconfig or secrets exposed in pipelines
 Commit and push the change.
 
-10 # ![output10](imges/output10.png)
+# ![output10](img/output10.png)
 
 
 
