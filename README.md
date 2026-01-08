@@ -10,3 +10,50 @@ The setup follows a **GitOps approach** using two repositories:
 
 ## 📁 Repository Structure
 
+.
+├── k8s-connection
+│ └── .gitlab/agents/k8s-connection/config.yaml
+│
+├── k8s-data
+│ ├── Dockerfile
+│ ├── .gitlab-ci.yml
+│ └── k8s-files/
+│ ├── deployment.yaml
+│ ├── service.yaml
+│ └── secret.yaml
+
+
+---
+
+## ✅ Prerequisites
+
+- GitLab account
+- Kubernetes cluster (any one):
+  - Amazon EKS
+  - Azure AKS
+  - Google GKE
+  - DigitalOcean Kubernetes
+  - **Minikube (local Kubernetes)**
+- Installed locally:
+  - `kubectl`
+  - `helm`
+  - `docker`
+  - `git`
+
+---
+
+## 🔹 Step 01: Create GitLab Repositories
+
+Create **two repositories** in GitLab:
+
+1. `k8s-connection`
+2. `k8s-data`
+
+---
+
+## 🔹 Step 02: Install GitLab Kubernetes Agent
+
+### Create Agent Configuration File
+
+In the **k8s-connection** repository, create:
+
