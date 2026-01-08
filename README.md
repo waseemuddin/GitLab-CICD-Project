@@ -95,3 +95,92 @@ helm upgrade --install k8s-connection gitlab/gitlab-agent \
   --set config.kasAddress=wss://kas.gitlab.com
 
 
+## 🔹 Step 04: Clone Both Repositories Locally
+
+git clone https://gitlab.com/<username>/k8s-connection.git
+git clone https://gitlab.com/<username>/k8s-data.git
+
+## 🔹 Step 05: Build Docker Image (Sample V1)
+
+Inside k8s-data, build the Docker image:
+
+```bash
+docker build -t sample:v1 .
+```
+
+## 🔹 Step 06: Push Image to GitLab Container Registry
+
+Login to GitLab Registry
+
+docker login registry.gitlab.com
+
+Build & Push Image
+```bash
+docker build -t registry.gitlab.com/<username>/k8s-data .
+docker push registry.gitlab.com/<username>/k8s-data
+```
+
+## 🔹 Step 07: Push Code to GitLab
+
+```bash
+git add .
+git commit -m "Initial commit"
+git push
+```
+
+## 🔹 Step 08: Create GitLab CI/CD Pipeline
+
+```bash
+Create .gitlab-ci.yml inside k8s-data repository.
+
+stages:
+  - build
+  - deploy
+
+build:
+  image: docker:24.0.5-cli
+  stage: build
+  services:
+    - docker:24.0.5-dind
+  script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
+    - docker build -t $CI_REGISTRY_IMAGE:latest .
+    - docker push $CI_REGISTRY_IMAGE:latest
+```
+Once committed, the pipeline will build and push the Docker image automatically.
+
+## 🔹 Step 09: Deploy Application to Kubernetes
+
+```bash
+deploy_project:
+  image:
+    name: bitnami/kubectl:latest
+    entrypoint: [""]
+  stage: deploy
+  script:
+    - kubectl config get-contexts
+    - kubectl config use-context "$KUBE_CONTEXT"
+    - kubectl get nodes
+    - kubectl apply -f k8s-files/
+    - kubectl get pods
+    - kubectl get svc
+    - kubectl get nodes -o wide
+```
+## 🔐 Fix Agent Access Issue (Important)
+
+If the pipeline fails due to an agent connection issue, update the following file:
+k8s-connection → .gitlab/agents/k8s-connection/config.yaml
+
+```bash
+ci_access:
+  projects:
+    - id: <username>/k8s-data
+```
+
+Final OutPut
+
+Docker images are built and pushed via GitLab CI/CD
+GitLab Kubernetes Agent securely connects to Minikube
+Application is deployed to Kubernetes using GitOps
+No kubeconfig or secrets exposed in pipelines
+Commit and push the change.
