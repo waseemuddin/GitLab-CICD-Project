@@ -14,6 +14,8 @@ The setup follows a **GitOps approach** using two repositories:
 
 ## 📁 Repository Structure
 
+# ![git-cicd-diagram](imges/01.png)
+
 .
 ├── k8s-connection
 │ └── .gitlab/agents/k8s-connection/config.yaml
@@ -50,8 +52,8 @@ The setup follows a **GitOps approach** using two repositories:
 
 Create **two repositories** in GitLab:
 
-1. `k8s-connection`
-2. `k8s-data`
+1. `k8s-connection` (Link: https://gitlab.com/inwaseem63/k8s-connection)
+2. `k8s-data`       (Link: https://gitlab.com/inwaseem63/k8s-data)
 
 ---
 
@@ -76,11 +78,14 @@ In the **k8s-connection** repository, create:
 3. Select **GitLab Agent**
 4. Copy the **Agent Access Token**
 
+
+3 # ![git-cicd-diagram](imges/01.png)
+
+
 Example:
 ``shell
 glagent-xxxxxxxxxxxxxxxxxxxxxxxx
 ``
-
 
 ---
 
@@ -98,11 +103,14 @@ helm upgrade --install k8s-connection gitlab/gitlab-agent \
   --set config.token=<AGENT_TOKEN> \
   --set config.kasAddress=wss://kas.gitlab.com
 
+4 # ![git-cicd-diagram](imges/01.png)
+
 
 ## 🔹 Step 04: Clone Both Repositories Locally
 
-git clone https://gitlab.com/<username>/k8s-connection.git
-git clone https://gitlab.com/<username>/k8s-data.git
+git clone https://gitlab.com/inwaseem63/k8s-data
+git clone https://gitlab.com/inwaseem63/k8s-connection
+
 
 ## 🔹 Step 05: Build Docker Image (Sample V1)
 
@@ -111,6 +119,9 @@ Inside k8s-data, build the Docker image:
 ```bash
 docker build -t sample:v1 .
 ```
+
+5 # ![git-cicd-diagram](imges/01.png)
+
 
 ## 🔹 Step 06: Push Image to GitLab Container Registry
 
@@ -123,6 +134,8 @@ Build & Push Image
 docker build -t registry.gitlab.com/<username>/k8s-data .
 docker push registry.gitlab.com/<username>/k8s-data
 ```
+
+5 # ![git-cicd-diagram](imges/01.png)
 
 ## 🔹 Step 07: Push Code to GitLab
 
@@ -153,6 +166,11 @@ build:
 ```
 Once committed, the pipeline will build and push the Docker image automatically.
 
+6 # ![docker06](imges/docker06.png)
+
+
+8 # ![k8s-dia08](imges/k8s-dia08.png)
+
 ## 🔹 Step 09: Deploy Application to Kubernetes
 
 ```bash
@@ -170,6 +188,11 @@ deploy_project:
     - kubectl get svc
     - kubectl get nodes -o wide
 ```
+
+
+7 # ![k8s-07](imges/k8s-07.png)
+
+
 ## 🔐 Fix Agent Access Issue (Important)
 
 If the pipeline fails due to an agent connection issue, update the following file:
@@ -181,10 +204,17 @@ ci_access:
     - id: <username>/k8s-data
 ```
 
-Final OutPut
+9 # ![cicd-09](imges/cicd-09.png)
 
+
+Final OutPut
 Docker images are built and pushed via GitLab CI/CD
 GitLab Kubernetes Agent securely connects to Minikube
 Application is deployed to Kubernetes using GitOps
 No kubeconfig or secrets exposed in pipelines
 Commit and push the change.
+
+10 # ![output10](imges/output10.png)
+
+
+
