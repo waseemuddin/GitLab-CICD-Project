@@ -136,29 +136,36 @@ git push
 ```bash
 Create .gitlab-ci.yml inside k8s-data repository.
 
+variables:
+  DOCKER_TLS_CERTDIR: ""
+  KUBE_CONTEXT: <username>/k8s-connection:k8s-connection
+
 stages:
   - build
+  - test
   - deploy
-
 build:
-  image: docker:24.0.5-cli
+  image: docker
   stage: build
   services:
-    - docker:24.0.5-dind
+    - docker:dind
   script:
     - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
     - docker build -t $CI_REGISTRY_IMAGE:latest .
     - docker push $CI_REGISTRY_IMAGE:latest
 ```
+
 Once committed, the pipeline will build and push the Docker image automatically.
 
 # ![Docker image](img/docker06.png)
 
 
 
-# ![k8s-dia08](img/k8s-dia08.png)
 
 ## 🔹 Step 09: Deploy Application to Kubernetes
+
+# ![k8s-dia08](img/k8s-dia08.png)
+
 
 ```bash
 deploy_project:
@@ -174,10 +181,12 @@ deploy_project:
     - kubectl get pods
     - kubectl get svc
     - kubectl get nodes -o wide
+
 ```
 
-# ![k8s-07](img/k8s-07.png)
+# ![k8s-07](img/k8s-deploy01.png)
 
+# ![k8s-07](img/k8s-deploy02.png)
 
 ## 🔐 Fix Agent Access Issue (Important)
 
@@ -190,17 +199,21 @@ ci_access:
     - id: <username>/k8s-data
 ```
 
-# ![cicd-09](img/cicd-09.png)
+# ![cicd-09](img/pipeline-view.png)
 
 
 Final OutPut
 Docker images are built and pushed via GitLab CI/CD
 GitLab Kubernetes Agent securely connects to Minikube
 Application is deployed to Kubernetes using GitOps
-No kubeconfig or secrets exposed in pipelines
-Commit and push the change.
 
-# ![output10](img/output10.png)
+## 1st App
+# ![output10](img/output10.png) 
 
+## 2nd App
+
+# ![output10](img/app-view01.png) 
+
+# ![output10](img/app-view02.png) 
 
 
